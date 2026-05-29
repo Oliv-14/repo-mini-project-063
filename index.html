@@ -5,50 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estimasi Biaya Kegiatan Mahasiswa</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f0f2f5; }
-        .container { max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        h1 { color: #1f4e79; text-align: center; }
-        .info-box { background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #1f4e79; }
-        .price-list { display: flex; gap: 10px; margin-bottom: 30px; }
-        .price-card { flex: 1; background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #ddd; }
-        .price-card h3 { margin: 0 0 10px 0; color: #333; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            background: linear-gradient(135deg, #f5f3ff 0%, #faf5ff 100%); 
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 40px auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1); 
+        }
+        h1 { 
+            color: #7c3aed; 
+            text-align: center; 
+        }
+        .info-box { 
+            background: #f3e8ff; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            border-left: 5px solid #a855f7; 
+        }
+        .price-list { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 30px; 
+        }
+        .price-card { 
+            flex: 1; 
+            background: #faf5ff; 
+            padding: 15px; 
+            border-radius: 8px; 
+            text-align: center; 
+            border: 2px solid #e9d5ff; 
+        }
+        .price-card h3 { 
+            margin: 0 0 10px 0; 
+            color: #7c3aed; 
+        }
         
         /* Style untuk Form Kalkulator */
-        .calculator { background: #fff3cd; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        button { background: #1f4e79; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px; }
-        button:hover { background: #163655; }
+        .calculator { 
+            background: #f3e8ff; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-bottom: 20px;
+            border: 2px solid #e9d5ff;
+        }
+        .calculator h3 {
+            color: #7c3aed;
+            margin-top: 0;
+        }
+        .form-group { 
+            margin-bottom: 15px; 
+        }
+        label { 
+            display: block; 
+            margin-bottom: 5px; 
+            font-weight: bold;
+            color: #5b21b6;
+        }
+        input, select { 
+            width: 100%; 
+            padding: 10px; 
+            border: 2px solid #ddd6fe; 
+            border-radius: 5px; 
+            box-sizing: border-box;
+            background: #faf5ff;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+        }
+        button { 
+            background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            width: 100%; 
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover { 
+            background: linear-gradient(135deg, #9333ea 0%, #6d28d9 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
         
         /* Style untuk JSON Response */
         .result-box { 
             margin-top: 20px; 
             padding: 15px; 
-            background: #1e1e1e; 
+            background: #1e1b2e; 
             border-radius: 8px; 
-            display: none; 
+            display: none;
+            border: 2px solid #7c3aed;
         }
         .result-box h4 { 
             margin: 0 0 10px 0; 
-            color: #1f4e79; 
-            color: #fff;
+            color: #d8b4fe;
+            font-size: 1.1em;
         }
         pre {
-            background: #2d2d2d;
-            color: #d4d4d4;
+            background: #2e1065;
+            color: #e9d5ff;
             padding: 12px;
             border-radius: 6px;
             overflow-x: auto;
             font-family: 'Consolas', 'Monaco', monospace;
             font-size: 0.9em;
             white-space: pre-wrap;
+            border: 1px solid #581c87;
+        }
+        
+        h3 {
+            color: #6d28d9;
+            margin-bottom: 15px;
+        }
+        
+        hr {
+            border: none;
+            border-top: 2px solid #e9d5ff;
+            margin: 30px 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Estimasi Biaya Kegiatan Mahasiswa</h1>
+        <h1>💰 Estimasi Biaya Kegiatan Mahasiswa</h1>
         
         <div class="info-box">
             <p><strong>Praktikum:</strong> Komputasi Awan - Serverless Azure<br>
@@ -56,16 +147,16 @@
             <strong>Nama:</strong> Olivia Sulistiana</p>
         </div>
 
-        <h3>Daftar Harga</h3>
+        <h3>📋 Daftar Harga</h3>
         <div class="price-list">
-            <div class="price-card"><h3>Snack</h3><p>Rp15.000/pax</p></div>
-            <div class="price-card"><h3>Makan</h3><p>Rp30.000/pax</p></div>
-            <div class="price-card"><h3>Lengkap</h3><p>Rp45.000/pax</p></div>
+            <div class="price-card"><h3>🍪 Snack</h3><p>Rp15.000/pax</p></div>
+            <div class="price-card"><h3>🍱 Makan</h3><p>Rp30.000/pax</p></div>
+            <div class="price-card"><h3>🎁 Lengkap</h3><p>Rp45.000/pax</p></div>
         </div>
 
         <!-- Bagian Kalkulator -->
         <div class="calculator">
-            <h3>Hitung Estimasi</h3>
+            <h3>🧮 Hitung Estimasi</h3>
             <div class="form-group">
                 <label>Jumlah Peserta:</label>
                 <input type="number" id="jumlahInput" placeholder="Contoh: 40">
@@ -87,7 +178,7 @@
             <pre id="jsonOutput"></pre>
         </div>
 
-        <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+        <hr>
     </div>
 
     <script>
