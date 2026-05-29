@@ -21,14 +21,34 @@
         button { background: #1f4e79; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px; }
         button:hover { background: #163655; }
         
-        .result-box { margin-top: 20px; padding: 15px; background: #d4edda; border-radius: 8px; display: none; }
-        .result-box p { margin: 5px 0; font-size: 18px; }
-        .total { font-weight: bold; font-size: 24px; color: #155724; }
+        /* Style untuk JSON Response */
+        .result-box { 
+            margin-top: 20px; 
+            padding: 15px; 
+            background: #1e1e1e; 
+            border-radius: 8px; 
+            display: none; 
+        }
+        .result-box h4 { 
+            margin: 0 0 10px 0; 
+            color: #1f4e79; 
+            color: #fff;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #d4d4d4;
+            padding: 12px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1> Estimasi Biaya Kegiatan Mahasiswa</h1>
+        <h1>Estimasi Biaya Kegiatan Mahasiswa</h1>
         
         <div class="info-box">
             <p><strong>Praktikum:</strong> Komputasi Awan - Serverless Azure<br>
@@ -43,9 +63,9 @@
             <div class="price-card"><h3>Lengkap</h3><p>Rp45.000/pax</p></div>
         </div>
 
-        <!-- Bagian Kalkulator Baru -->
+        <!-- Bagian Kalkulator -->
         <div class="calculator">
-            <h3> Hitung Estimasi</h3>
+            <h3>Hitung Estimasi</h3>
             <div class="form-group">
                 <label>Jumlah Peserta:</label>
                 <input type="number" id="jumlahInput" placeholder="Contoh: 40">
@@ -61,24 +81,18 @@
             <button onclick="hitungBiaya()">Hitung Total Biaya</button>
         </div>
 
+        <!-- Box untuk menampilkan JSON Response -->
         <div id="resultBox" class="result-box">
-            <p>Jumlah: <span id="resJumlah"></span></p>
-            <p>Jenis: <span id="resJenis"></span></p>
-            <p class="total">Total: Rp <span id="resTotal"></span></p>
+            <h4>📦 JSON Response:</h4>
+            <pre id="jsonOutput"></pre>
         </div>
 
         <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
-
-        <h3>📡 Dokumentasi API</h3>
-        <p>URL API: <code id="apiUrlDisplay">https://[URL-AZURE-FUNCTION-ANDA]/api/HitungBiaya</code></p>
-        <p>Contoh request: <code>?jumlah=40&jenis=snack</code></p>
     </div>
 
     <script>
-        // PENTING: Ganti URL di bawah ini dengan URL Function App Anda (tanpa ?code=...)
-        const FUNCTION_URL = "https://func-mini-project-063-hrdchtbyhhccg0gx.southeastasia-01.azurewebsites.net/api/HitungBiaya"; 
-        
-        document.getElementById('apiUrlDisplay').textContent = FUNCTION_URL;
+        // Ganti dengan URL Function App kamu
+        const FUNCTION_URL = "https://func-mini-project-063-hrdchtbyhhccg0gx.southeastasia-01.azurewebsites.net/api/HitungBiaya";
 
         async function hitungBiaya() {
             const jumlah = document.getElementById('jumlahInput').value;
@@ -89,19 +103,15 @@
                 return;
             }
 
-            // Memanggil Azure Function
             try {
+                // Memanggil Azure Function
                 const response = await fetch(`${FUNCTION_URL}?jumlah=${jumlah}&jenis=${jenis}`);
                 const data = await response.json();
 
-                if (data.total) {
-                    document.getElementById('resJumlah').textContent = data.jumlah;
-                    document.getElementById('resJenis').textContent = data.jenis;
-                    document.getElementById('resTotal').textContent = data.total.toLocaleString('id-ID');
-                    document.getElementById('resultBox').style.display = 'block';
-                } else {
-                    alert("Error: " + (data.error || "Gagal menghubungi server"));
-                }
+                // Tampilkan JSON mentah dengan formatting rapi
+                document.getElementById('jsonOutput').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('resultBox').style.display = 'block';
+                
             } catch (error) {
                 alert("Gagal menghubungi API: " + error.message);
             }
