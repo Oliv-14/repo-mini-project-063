@@ -5,78 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estimasi Biaya Kegiatan Mahasiswa</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background: #f4f6f8;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 800px;
-            margin: 0 auto;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        h1 { color: #1f4e79; }
-        .info {
-            background: #e8f4f8;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        .harga {
-            margin: 10px 0;
-            padding: 10px;
-            background: #f0f8ff;
-            border-left: 4px solid #1f4e79;
-        }
-        .api-doc {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-        code {
-            background: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f0f2f5; }
+        .container { max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { color: #1f4e79; text-align: center; }
+        .info-box { background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #1f4e79; }
+        .price-list { display: flex; gap: 10px; margin-bottom: 30px; }
+        .price-card { flex: 1; background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #ddd; }
+        .price-card h3 { margin: 0 0 10px 0; color: #333; }
+        
+        /* Style untuk Form Kalkulator */
+        .calculator { background: #fff3cd; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { background: #1f4e79; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px; }
+        button:hover { background: #163655; }
+        
+        .result-box { margin-top: 20px; padding: 15px; background: #d4edda; border-radius: 8px; display: none; }
+        .result-box p { margin: 5px 0; font-size: 18px; }
+        .total { font-weight: bold; font-size: 24px; color: #155724; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📊 Estimasi Biaya Kegiatan Mahasiswa</h1>
+        <h1> Estimasi Biaya Kegiatan Mahasiswa</h1>
         
-        <div class="info">
-            <h3>Informasi Kegiatan</h3>
-            <p>Sistem ini membantu menghitung estimasi biaya konsumsi untuk kegiatan mahasiswa.</p>
+        <div class="info-box">
+            <p><strong>Praktikum:</strong> Komputasi Awan - Serverless Azure<br>
+            <strong>NIM:</strong> 0920240063<br>
+            <strong>Nama:</strong> Olivia Sulistiana</p>
         </div>
 
-        <h3>💰 Daftar Harga Konsumsi</h3>
-        <div class="harga"><strong>Snack:</strong> Rp15.000 per peserta</div>
-        <div class="harga"><strong>Makan:</strong> Rp30.000 per peserta</div>
-        <div class="harga"><strong>Lengkap:</strong> Rp45.000 per peserta</div>
-
-        <div class="api-doc">
-            <h3>📡 Dokumentasi API</h3>
-            <p><strong>URL API:</strong> <code>https://func-mini-project-063-hrdchtbyhhccg0gx.southeastasia-01.azurewebsites.net/api/HitungBiaya</code></p>
-            <p><strong>Metode:</strong> GET</p>
-            <p><strong>Parameter:</strong></p>
-            <ul>
-                <li><code>jumlah</code> - Jumlah peserta (angka)</li>
-                <li><code>jenis</code> - Jenis konsumsi (snack/makan/lengkap)</li>
-            </ul>
-            <p><strong>Contoh Penggunaan:</strong></p>
-            <code>https://[function-url]/api/HttpPraktikum?jumlah=40&jenis=snack</code>
+        <h3>Daftar Harga</h3>
+        <div class="price-list">
+            <div class="price-card"><h3>Snack</h3><p>Rp15.000/pax</p></div>
+            <div class="price-card"><h3>Makan</h3><p>Rp30.000/pax</p></div>
+            <div class="price-card"><h3>Lengkap</h3><p>Rp45.000/pax</p></div>
         </div>
 
-        <p style="margin-top: 30px; color: #666;">
-            <strong>Praktikum:</strong> Komputasi Awan - Serverless Azure<br>
-            <strong>NIM:</strong> [NIM Anda]<br>
-            <strong>Nama:</strong> [Nama Anda]
-        </p>
+        <!-- Bagian Kalkulator Baru -->
+        <div class="calculator">
+            <h3> Hitung Estimasi</h3>
+            <div class="form-group">
+                <label>Jumlah Peserta:</label>
+                <input type="number" id="jumlahInput" placeholder="Contoh: 40">
+            </div>
+            <div class="form-group">
+                <label>Jenis Konsumsi:</label>
+                <select id="jenisInput">
+                    <option value="snack">Snack (Rp15.000)</option>
+                    <option value="makan">Makan (Rp30.000)</option>
+                    <option value="lengkap">Lengkap (Rp45.000)</option>
+                </select>
+            </div>
+            <button onclick="hitungBiaya()">Hitung Total Biaya</button>
+        </div>
+
+        <div id="resultBox" class="result-box">
+            <p>Jumlah: <span id="resJumlah"></span></p>
+            <p>Jenis: <span id="resJenis"></span></p>
+            <p class="total">Total: Rp <span id="resTotal"></span></p>
+        </div>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+
+        <h3>📡 Dokumentasi API</h3>
+        <p>URL API: <code id="apiUrlDisplay">https://[URL-AZURE-FUNCTION-ANDA]/api/HitungBiaya</code></p>
+        <p>Contoh request: <code>?jumlah=40&jenis=snack</code></p>
     </div>
+
+    <script>
+        // PENTING: Ganti URL di bawah ini dengan URL Function App Anda (tanpa ?code=...)
+        const FUNCTION_URL = "https://func-mini-project-063-hrdchtbyhhccg0gx.southeastasia-01.azurewebsites.net/api/HitungBiaya"; 
+        
+        document.getElementById('apiUrlDisplay').textContent = FUNCTION_URL;
+
+        async function hitungBiaya() {
+            const jumlah = document.getElementById('jumlahInput').value;
+            const jenis = document.getElementById('jenisInput').value;
+
+            if (!jumlah || jumlah <= 0) {
+                alert("Masukkan jumlah peserta yang valid!");
+                return;
+            }
+
+            // Memanggil Azure Function
+            try {
+                const response = await fetch(`${FUNCTION_URL}?jumlah=${jumlah}&jenis=${jenis}`);
+                const data = await response.json();
+
+                if (data.total) {
+                    document.getElementById('resJumlah').textContent = data.jumlah;
+                    document.getElementById('resJenis').textContent = data.jenis;
+                    document.getElementById('resTotal').textContent = data.total.toLocaleString('id-ID');
+                    document.getElementById('resultBox').style.display = 'block';
+                } else {
+                    alert("Error: " + (data.error || "Gagal menghubungi server"));
+                }
+            } catch (error) {
+                alert("Gagal menghubungi API: " + error.message);
+            }
+        }
+    </script>
 </body>
 </html>
